@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Slider from './Slider'
 import { getImagesForModel } from '../utils/images'
-// Импорты иконок соцсетей из src/img/icons
+// Импорты иконок соцсетей
 import instagramIcon from '../img/icons/instagram.svg'
 import facebookIcon from '../img/icons/facebook.svg'
 import xIcon from '../img/icons/x.svg'
@@ -14,110 +14,69 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
   if (!model) return null
 
   const [images, setImages] = useState([])
-  const [editing, setEditing] = useState(false)
-  const [form, setForm] = useState({ ...model })
-  const [uploading, setUploading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function load() {
+    async function loadImages() {
       try {
-        const possibleImages = getImagesForModel(model.id)
-        const existingImages = []
-        
-        // Проверяем какие изображения действительно существуют
-        for (const imgPath of possibleImages) {
-          try {
-            const response = await fetch(imgPath, { method: 'HEAD' })
-            if (response.ok) {
-              existingImages.push(imgPath)
-            }
-          } catch (e) {
-            // Изображение не найдено
-          }
-        }
-        
-        setImages(existingImages)
+        setLoading(true)
+        // Получаем изображения для модели (теперь функция возвращает только существующие)
+        const availableImages = getImagesForModel(model.id)
+        setImages(availableImages)
       } catch (e) {
         console.error('Failed to load images', e)
         setImages([])
+      } finally {
+        setLoading(false)
       }
     }
-    load()
+    loadImages()
   }, [model.id])
-
-  useEffect(() => {
-    setForm({ ...model })
-  }, [model])
-
-  // Используем form как источник отображаемых данных — после сохранения form содержит новые значения
-  const displayModel = form || model
-
-  const icons = { 
-    instagram: instagramIcon, 
-    facebook: facebookIcon, 
-    x: xIcon, 
-    youtube: youtubeIcon, 
-    dropbox: dropboxIcon,
-    website: websiteIcon,
-    onlyfans: onlyfansIcon
-  }
 
   const labels = {
     en: {
-      edit: 'Edit', save: 'Save', cancel: 'Cancel', upload: 'Upload photos', back: '← Back to gallery', age: 'Age', height: 'Height', bodyType: 'Body type', measurements: 'Measurements', features: 'Features', style: 'Style', hobbies: 'Hobbies', faceStyle: 'Face style', bio: 'Bio', sexualPreferences: 'Sexual preferences', country: 'Country'
+      back: '← Back to Gallery',
+      age: 'Age',
+      height: 'Height',
+      bodyType: 'Body Type',
+      measurements: 'Measurements',
+      features: 'Features',
+      style: 'Style',
+      hobbies: 'Hobbies',
+      faceStyle: 'Face Style',
+      bio: 'Biography',
+      sexualPreferences: 'Sexual Preferences',
+      country: 'Country',
+      hairColor: 'Hair Color',
+      skinColor: 'Skin Color',
+      characteristics: 'Characteristics',
+      interests: 'Interests & Style',
+      about: 'About',
+      socialMedia: 'Find me on',
+      loading: 'Loading...'
     },
     ru: {
-      edit: 'Редактировать', save: 'Сохранить', cancel: 'Отменить', upload: 'Загрузить фото', back: '← Назад к галерее', age: 'Возраст', height: 'Рост', bodyType: 'Тип фигуры', measurements: 'Замеры (Г/Т/Б)', features: 'Особенности', style: 'Стиль', hobbies: 'Хобби', faceStyle: 'Черты лица', bio: 'Биография', sexualPreferences: 'Сексуальные предпочтения', country: 'Страна'
+      back: '← Назад к галерее',
+      age: 'Возраст',
+      height: 'Рост',
+      bodyType: 'Тип фигуры',
+      measurements: 'Параметры',
+      features: 'Особенности',
+      style: 'Стиль',
+      hobbies: 'Хобби',
+      faceStyle: 'Черты лица',
+      bio: 'Биография',
+      sexualPreferences: 'Сексуальные предпочтения',
+      country: 'Страна',
+      hairColor: 'Цвет волос',
+      skinColor: 'Цвет кожи',
+      characteristics: 'Характеристики',
+      interests: 'Интересы и стиль',
+      about: 'О себе',
+      socialMedia: 'Найти в соцсетях',
+      loading: 'Загрузка...'
     }
   }
-
-  async function saveModel() {
-    try {
-      const res = await fetch(`/api/models/${model.id}`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form)
-      })
-      if (!res.ok) throw new Error('save failed')
-      // Попробуем получить обновлённую модель из тела ответа и обновить локальную форму
-      let data = null
-      try { data = await res.json() } catch (e) { /* no json */ }
-      const updated = data && (data.model || data) ? (data.model || data) : null
-      if (updated && updated.id) {
-        setForm({ ...updated })
-      }
-      setEditing(false)
-    } catch (e) {
-      console.error('Error saving model', e)
-      alert(lang === 'ru' ? 'Ошибка при сохранении модели' : 'Error saving model')
-    }
-  }
-
-  async function handleUpload(ev) {
-    const files = ev.target.files
-    if (!files || files.length === 0) return
-    const fd = new FormData()
-    for (const f of files) fd.append('photos', f)
-    setUploading(true)
-    try {
-      const res = await fetch(`/api/models/${model.id}/upload`, { method: 'POST', body: fd })
-      const data = await res.json()
-      if (res.ok && data.files) {
-        const base = import.meta.env.DEV ? 'http://localhost:3000' : ''
-        const normalized = data.files.map(u => (u && u.startsWith('/') ? base + u : u))
-        setImages(prev => Array.from(new Set([...prev, ...normalized])))
-      } else {
-        console.error('Upload failed', data)
-        alert(lang === 'ru' ? 'Ошибка загрузки' : 'Upload error')
-      }
-    } catch (e) {
-      console.error('Upload error', e)
-      alert(lang === 'ru' ? 'Ошибка загрузки' : 'Upload error')
-    } finally {
-      setUploading(false)
-      ev.target.value = null
-    }
-  }
-
-  const getField = (key) => (lang === 'ru' ? (displayModel[key + 'RU'] || displayModel[key]) : displayModel[key])
 
   // Функция для получения флага страны
   const getCountryFlag = (country) => {
@@ -145,149 +104,156 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     
     const flagFile = flagMap[country]
     if (flagFile) {
+      const basePath = import.meta.env.BASE_URL || '/models/'
       return (
         <img 
-          src={`/img/icons/country/${flagFile}`} 
+          src={`${basePath}img/icons/country/${flagFile}`} 
           alt={`${country} flag`}
           className="country-flag"
+          loading="lazy"
         />
       )
     }
     return <span className="default-flag">🏳️</span>
   }
 
-  const flag = getCountryFlag(displayModel.country)
+  // Объект с иконками социальных сетей
+  const socialIcons = {
+    instagram: instagramIcon,
+    facebook: facebookIcon,
+    x: xIcon,
+    youtube: youtubeIcon,
+    dropbox: dropboxIcon,
+    website: websiteIcon,
+    onlyfans: onlyfansIcon
+  }
+
+  const getField = (key) => (lang === 'ru' ? (model[key + 'RU'] || model[key]) : model[key])
+  const flag = getCountryFlag(model.country)
+
+  if (loading) {
+    return (
+      <div className="model-page-loading">
+        <div className="loading-spinner"></div>
+        <p>{labels[lang].loading}</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="premium-model-page">
-      <button className="premium-back-button" onClick={onBack}>{labels[lang].back}</button>
+    <div className="model-page">
+      <button className="back-button" onClick={onBack}>
+        {labels[lang].back}
+      </button>
 
-      <div className="slider-container" style={{ marginTop: 12 }}>
-        <Slider images={images} />
-      </div>
-
-      {/* Панель управления скрыта */}
-      <div style={{ display: 'none' }} aria-hidden="true">
-        <button className="back-button" onClick={() => setEditing(v => !v)}>{editing ? labels[lang].cancel : labels[lang].edit}</button>
-        <label style={{ alignSelf: 'center', cursor: 'pointer', background: '#667eea', color: 'white', padding: '8px 12px', borderRadius: 8 }}>
-          {uploading ? (lang === 'ru' ? 'Загрузка...' : 'Uploading...') : labels[lang].upload}
-          <input type="file" multiple style={{ display: 'none' }} onChange={handleUpload} />
-        </label>
-      </div>
-
-      {editing ? (
-        <div style={{ marginTop: 20 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            {[
-              ['name', 'Name'], ['surname', 'Surname'], ['stageName', 'Stage name'], ['country', 'Country'], ['hairColor', 'Hair color'], ['skinColor', 'Skin color'], ['age', labels[lang].age], ['height', labels[lang].height], ['bodyType', labels[lang].bodyType], ['measurements', labels[lang].measurements], ['features', labels[lang].features], ['style', labels[lang].style], ['hobbies', labels[lang].hobbies], ['faceStyle', labels[lang].faceStyle],
-              ['sexualPreferences', 'Sexual preferences'], ['sexualPreferencesRU', 'Sexual preferences (RU)']
-            ].map(([key, label]) => (
-              <div key={key} style={{ display: 'flex', flexDirection: 'column' }}>
-                <label style={{ fontWeight: 'bold', marginBottom: 6 }}>{lang === 'ru' ? (model[key + 'RU'] ? label + ' (RU)' : label) : label}</label>
-                <input value={form[key] ?? ''} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} />
-              </div>
-            ))}
+      <div className="model-page-content">
+        {/* Hero section with slider */}
+        <div className="model-hero">
+          <div className="hero-slider">
+            <Slider images={images} />
           </div>
-
-          {/* Редактирование ссылок соцсетей */}
-          <div style={{ marginTop: 12 }}>
-            <h4 style={{ margin: '6px 0' }}>{lang === 'ru' ? 'Социальные сети' : 'Social links'}</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              {['instagram', 'facebook', 'x', 'youtube', 'dropbox', 'website', 'onlyfans'].map(k => (
-                <div key={k} style={{ display: 'flex', flexDirection: 'column' }}>
-                  <label style={{ fontWeight: 'bold', marginBottom: 6 }}>{k.charAt(0).toUpperCase() + k.slice(1)}</label>
-                  <input value={form.social?.[k] ?? ''} onChange={e => setForm(f => ({ ...f, social: { ...(f.social || {}), [k]: e.target.value } }))} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginTop: 12 }}>
-            <button className="back-button" onClick={saveModel}>{labels[lang].save}</button>
-          </div>
-        </div>
-      ) : (
-        <div className="premium-model-profile" style={{ marginTop: 20 }}>
-          {/* Профильная карточка с градиентом */}
-          <div className="profile-hero">
-            <div className="profile-header">
-              <div className="name-block">
-                <h1 className="profile-name">
-                  {flag} 
-                  <span className="name-text">{displayModel.name} {displayModel.surname}</span>
+          
+          <div className="hero-info">
+            <div className="hero-header">
+              <div className="hero-name-section">
+                <h1 className="hero-name">
+                  {flag}
+                  <span className="name-text">{model.name} {model.surname}</span>
                 </h1>
                 {getField('stageName') && (
-                  <div className="profile-stage-name">{getField('stageName')}</div>
+                  <div className="hero-stage-name">{getField('stageName')}</div>
                 )}
               </div>
-              <div className="profile-stats">
-                <div className="big-stat">
-                  <div className="big-number">{displayModel.age}</div>
-                  <div className="big-label">{lang === 'ru' ? 'лет' : 'years'}</div>
+              
+              <div className="hero-stats">
+                <div className="stat-item">
+                  <div className="stat-number">{model.age}</div>
+                  <div className="stat-label">{lang === 'ru' ? 'лет' : 'years'}</div>
                 </div>
-                <div className="big-stat">
-                  <div className="big-number">{displayModel.height}</div>
-                  <div className="big-label">{lang === 'ru' ? 'см' : 'cm'}</div>
+                <div className="stat-item">
+                  <div className="stat-number">{model.height}</div>
+                  <div className="stat-label">{lang === 'ru' ? 'см' : 'cm'}</div>
                 </div>
-                {displayModel.measurements && (
-                  <div className="big-stat">
-                    <div className="big-number">{displayModel.measurements}</div>
-                    <div className="big-label">{lang === 'ru' ? 'параметры' : 'parameters'}</div>
+                {model.measurements && (
+                  <div className="stat-item">
+                    <div className="stat-number">{model.measurements}</div>
+                    <div className="stat-label">{labels[lang].measurements}</div>
                   </div>
                 )}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Характеристики */}
-          <div className="characteristics-section">
-            <h3 className="section-title">{lang === 'ru' ? 'Характеристики' : 'Characteristics'}</h3>
-            <div className="characteristics-list">
+        {/* Content sections */}
+        <div className="model-content">
+          {/* Characteristics */}
+          <div className="content-section">
+            <h3 className="section-title">{labels[lang].characteristics}</h3>
+            <div className="characteristics-grid">
               {getField('country') && (
                 <div className="char-item">
-                  <span className="char-label">{labels[lang].country}</span>
-                  <span className="char-value">{getField('country')}</span>
+                  <span className="char-icon">🌍</span>
+                  <div className="char-content">
+                    <span className="char-label">{labels[lang].country}</span>
+                    <span className="char-value">{getField('country')}</span>
+                  </div>
                 </div>
               )}
               {getField('hairColor') && (
                 <div className="char-item">
-                  <span className="char-label">{lang === 'ru' ? 'Цвет волос' : 'Hair color'}</span>
-                  <span className="char-value">{getField('hairColor')}</span>
+                  <span className="char-icon">💇‍♀️</span>
+                  <div className="char-content">
+                    <span className="char-label">{labels[lang].hairColor}</span>
+                    <span className="char-value">{getField('hairColor')}</span>
+                  </div>
                 </div>
               )}
               {getField('skinColor') && (
                 <div className="char-item">
-                  <span className="char-label">{lang === 'ru' ? 'Цвет кожи' : 'Skin color'}</span>
-                  <span className="char-value">{getField('skinColor')}</span>
+                  <span className="char-icon">✨</span>
+                  <div className="char-content">
+                    <span className="char-label">{labels[lang].skinColor}</span>
+                    <span className="char-value">{getField('skinColor')}</span>
+                  </div>
                 </div>
               )}
               {getField('bodyType') && (
                 <div className="char-item">
-                  <span className="char-label">{labels[lang].bodyType}</span>
-                  <span className="char-value">{getField('bodyType')}</span>
+                  <span className="char-icon">👤</span>
+                  <div className="char-content">
+                    <span className="char-label">{labels[lang].bodyType}</span>
+                    <span className="char-value">{getField('bodyType')}</span>
+                  </div>
                 </div>
               )}
               {getField('features') && (
                 <div className="char-item">
-                  <span className="char-label">{labels[lang].features}</span>
-                  <span className="char-value">{getField('features')}</span>
+                  <span className="char-icon">⭐</span>
+                  <div className="char-content">
+                    <span className="char-label">{labels[lang].features}</span>
+                    <span className="char-value">{getField('features')}</span>
+                  </div>
                 </div>
               )}
               {getField('faceStyle') && (
                 <div className="char-item">
-                  <span className="char-label">{labels[lang].faceStyle}</span>
-                  <span className="char-value">{getField('faceStyle')}</span>
+                  <span className="char-icon">😊</span>
+                  <div className="char-content">
+                    <span className="char-label">{labels[lang].faceStyle}</span>
+                    <span className="char-value">{getField('faceStyle')}</span>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Интересы и стиль */}
-          <div className="interests-section">
-            <h3 className="section-title">{lang === 'ru' ? 'Интересы и стиль' : 'Interests & Style'}</h3>
+          {/* Interests & Style */}
+          <div className="content-section">
+            <h3 className="section-title">{labels[lang].interests}</h3>
             <div className="interests-grid">
               {getField('style') && (
-                <div className="interest-item style-item">
+                <div className="interest-card">
                   <div className="interest-icon">🎨</div>
                   <div className="interest-content">
                     <div className="interest-label">{labels[lang].style}</div>
@@ -296,7 +262,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
                 </div>
               )}
               {getField('hobbies') && (
-                <div className="interest-item hobbies-item">
+                <div className="interest-card">
                   <div className="interest-icon">🎭</div>
                   <div className="interest-content">
                     <div className="interest-label">{labels[lang].hobbies}</div>
@@ -305,7 +271,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
                 </div>
               )}
               {getField('sexualPreferences') && (
-                <div className="interest-item preferences-item">
+                <div className="interest-card">
                   <div className="interest-icon">💖</div>
                   <div className="interest-content">
                     <div className="interest-label">{labels[lang].sexualPreferences}</div>
@@ -316,26 +282,41 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
             </div>
           </div>
 
-          {/* Биография */}
-          <div className="bio-section">
-            <h3 className="section-title">{lang === 'ru' ? 'О себе' : 'About'}</h3>
+          {/* Biography */}
+          <div className="content-section">
+            <h3 className="section-title">{labels[lang].about}</h3>
             <div className="bio-content">
-              <p className="bio-text-modern">
-                {lang === 'ru' ? (displayModel.bioRU || displayModel.bioEN) : (displayModel.bioEN || displayModel.bioRU)}
+              <p className="bio-text">
+                {lang === 'ru' ? (model.bioRU || model.bioEN) : (model.bioEN || model.bioRU)}
               </p>
               
-              {/* Соцсети в современном стиле */}
-              {displayModel.social && (
-                <div className="social-section-modern">
-                  <h4 className="social-subtitle">{lang === 'ru' ? 'Найти в соцсетях' : 'Find me on'}</h4>
-                  <div className="social-grid-modern">
-                    {['instagram', 'facebook', 'x', 'youtube', 'dropbox', 'website', 'onlyfans'].map((key) => {
-                      const url = displayModel.social[key]
+              {/* Social Media */}
+              {model.social && (
+                <div className="social-section">
+                  <h4 className="social-title">{labels[lang].socialMedia}</h4>
+                  <div className="social-links">
+                    {Object.entries(model.social).map(([platform, url]) => {
                       if (!url) return null
+                      const iconSrc = socialIcons[platform]
                       return (
-                        <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="social-button-modern">
-                          <img src={icons[key]} alt={key} />
-                          <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                        <a 
+                          key={platform} 
+                          href={url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="social-link"
+                          title={platform.charAt(0).toUpperCase() + platform.slice(1)}
+                        >
+                          {iconSrc && (
+                            <img 
+                              src={iconSrc} 
+                              alt={platform} 
+                              className="social-icon"
+                            />
+                          )}
+                          <span className="social-label">
+                            {platform.charAt(0).toUpperCase() + platform.slice(1)}
+                          </span>
                         </a>
                       )
                     })}
@@ -345,7 +326,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }

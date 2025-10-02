@@ -1,37 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { getImagesForModel } from '../utils/images'
 
 export default function Gallery({ models, onSelect, lang = 'ru' }) {
   const [thumbs, setThumbs] = useState({})
   const [sortBy, setSortBy] = useState('name')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let mounted = true
     
     const loadThumbnails = async () => {
-      const entries = await Promise.all(models.map(async m => {
-        try {
-          const images = getImagesForModel(m.id)
-          // Попробуем найти первое существующее изображение
-          for (const imgPath of images) {
-            try {
-              const response = await fetch(imgPath, { method: 'HEAD' })
-              if (response.ok) {
-                return [m.id, imgPath]
-              }
-            } catch (e) {
-              // Изображение не найдено, пробуем следующее
-            }
-          }
-          return [m.id, null]
-        } catch (e) {
-          return [m.id, null]
+      setLoading(true)
+      const thumbnailsMap = {}
+      
+      // Создаем карту миниатюр напрямую без проверки HEAD запросов,
+      // так как теперь getImagesForModel возвращает только существующие файлы
+      models.forEach(model => {
+        const images = getImagesForModel(model.id)
+        if (images.length > 0) {
+          thumbnailsMap[model.id] = images[0] // первое изображение как главное
         }
-      }))
+      })
       
       if (!mounted) return
-      const map = Object.fromEntries(entries)
-      setThumbs(map)
+      
+      setThumbs(thumbnailsMap)
+      setLoading(false)
     }
     
     loadThumbnails()
@@ -40,29 +34,29 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
 
   const labels = {
     en: { 
-      age: '🎂 Age', 
-      height: 'Height', 
+      age: 'Age', 
       country: 'Country', 
-      sexualPreferences: 'Sexual preferences',
       sortBy: 'Sort by',
-      name: '👤 Name',
-      countrySort: '🌍 Country'
+      name: 'Name',
+      countrySort: 'Country',
+      loading: 'Loading...',
+      totalModels: 'Total models'
     },
     ru: { 
-      age: '🎂 Возрасту', 
-      height: 'Рост', 
+      age: 'Возрасту', 
       country: 'Страна', 
-      sexualPreferences: 'Сексуальные предпочтения',
       sortBy: 'Сортировать по',
-      name: '👤 Имени',
-      countrySort: '🌍 Стране'
+      name: 'Имени',
+      countrySort: 'Стране',
+      loading: 'Загрузка...',
+      totalModels: 'Всего моделей'
     }
   }
 
-  // Функция сортировки моделей
-  const sortModels = (models, criteria) => {
+  // Мемоизированная функция сортировки для оптимизации
+  const sortedModels = useMemo(() => {
     return [...models].sort((a, b) => {
-      switch (criteria) {
+      switch (sortBy) {
         case 'name':
           return a.name.localeCompare(b.name)
         case 'age':
@@ -75,11 +69,9 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
           return 0
       }
     })
-  }
+  }, [models, sortBy, lang])
 
-  const sortedModels = sortModels(models, sortBy)
-
-  // Функция для получения флага страны
+  // Функция для получения флага страны с правильным базовым путем
   const getCountryFlag = (country) => {
     const flagMap = {
       'China': 'china.svg',
@@ -105,26 +97,43 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
     
     const flagFile = flagMap[country]
     if (flagFile) {
+      // Используем правильный базовый путь для GitHub Pages
+      const basePath = import.meta.env.BASE_URL || '/models/'
       return (
         <img 
-          src={`/img/icons/country/${flagFile}`} 
+          src={`${basePath}img/icons/country/${flagFile}`} 
           alt={`${country} flag`}
           className="country-flag"
+          loading="lazy"
         />
       )
     }
     return <span className="default-flag">🏳️</span>
   }
 
+  if (loading) {
+    return (
+      <div className="gallery-loading">
+        <div className="loading-spinner"></div>
+        <p>{labels[lang].loading}</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="premium-gallery">
-      {/* Галерея всех моделей в стиле hero */}
-      <div className="models-section">
-        <div className="section-header">
-          <h2 className="section-title">
-            {lang === 'ru' ? 'Модели' : 'Models'}
+    <div className="gallery">
+      <div className="gallery-header">
+        <div className="gallery-stats">
+          <h2 className="gallery-title">
+            {lang === 'ru' ? 'Галерея моделей' : 'Models Gallery'}
           </h2>
-          <div className="sort-controls">
+          <p className="gallery-count">
+            {labels[lang].totalModels}: <span className="count-number">{models.length}</span>
+          </p>
+        </div>
+        
+        <div className="gallery-controls">
+          <div className="sort-control">
             <label className="sort-label">{labels[lang].sortBy}:</label>
             <select 
               className="sort-select"
@@ -137,50 +146,73 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
             </select>
           </div>
         </div>
-        <div className="hero-slides">
-          {sortedModels.map((model, index) => {
-            const thumb = thumbs[model.id]
-            const stage = lang === 'ru' ? (model.stageNameRU || model.stageName) : model.stageName
-            const countryName = lang === 'ru' ? (model.countryRU || model.country) : model.country
-            const flag = getCountryFlag(model.country)
-            
-            
-            return (
-              <div 
-                key={model.id} 
-                className="hero-slide"
-                onClick={() => onSelect(model.id)}
-              >
-                <div className="hero-image">
-                  {thumb ? (
-                    <img src={thumb} alt={`${model.name}`} />
-                  ) : (
-                    <div className="hero-placeholder">
-                      <div className="placeholder-content">
-                        {flag} 
-                        <span className="model-name">{model.name}</span>
-                      </div>
-                    </div>
-                  )}
+      </div>
+
+      <div className="gallery-grid">
+        {sortedModels.map((model) => {
+          const thumb = thumbs[model.id]
+          const stageName = lang === 'ru' ? (model.stageNameRU || model.stageName) : model.stageName
+          const countryName = lang === 'ru' ? (model.countryRU || model.country) : model.country
+          const flag = getCountryFlag(model.country)
+          
+          return (
+            <div 
+              key={model.id} 
+              className="model-card"
+              onClick={() => onSelect(model.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onSelect(model.id)
+                }
+              }}
+            >
+              <div className="card-image">
+                {thumb ? (
+                  <img 
+                    src={thumb} 
+                    alt={`${model.name} ${model.surname}`}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.style.display = 'none'
+                      e.target.nextSibling.style.display = 'flex'
+                    }}
+                  />
+                ) : null}
+                <div className="card-placeholder" style={{display: thumb ? 'none' : 'flex'}}>
+                  <div className="placeholder-content">
+                    {flag}
+                    <span className="placeholder-name">{model.name}</span>
+                  </div>
                 </div>
-                <div className="hero-overlay">
-                  <div className="hero-model-info">
-                    <h3 className="hero-model-name">
-                      {flag} 
-                      <span className="name-text">{model.name} {model.surname}</span>
-                    </h3>
-                    {stage && <p className="hero-stage-name">{stage}</p>}
-                    <div className="hero-stats">
-                      <span>{model.age} {lang === 'ru' ? 'лет' : 'yrs'}</span>
-                      <span>•</span>
-                      <span>{model.height} см</span>
+                <div className="card-overlay">
+                  <div className="card-gradient"></div>
+                  <div className="card-content">
+                    <div className="card-header">
+                      <h3 className="card-name">
+                        {flag}
+                        <span className="name-text">{model.name} {model.surname}</span>
+                      </h3>
+                      {stageName && <p className="card-stage">{stageName}</p>}
+                    </div>
+                    <div className="card-info">
+                      <div className="info-item">
+                        <span className="info-text">{countryName}</span>
+                      </div>
+                      <div className="card-stats">
+                        <span className="stat">{model.age} {lang === 'ru' ? 'лет' : 'yrs'}</span>
+                        <span className="stat-divider">•</span>
+                        <span className="stat">{model.height} см</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            )
-          })}
-        </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
