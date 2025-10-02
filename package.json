@@ -5,10 +5,10 @@
   "description": "International models gallery built with React and Vite",
   "author": "Elite Models",
   "license": "MIT",
-  "homepage": "https://username.github.io/models/",
+  "homepage": "https://nestaleks2.github.io/models/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/models.git"
+    "url": "https://github.com/nestaleks2/models.git"
   },
   "keywords": [
     "models",
