@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { getImagesForModel } from '../utils/images'
 
 export default function Gallery({ models, onSelect, lang = 'ru' }) {
   const [thumbs, setThumbs] = useState({})
@@ -6,23 +7,34 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
 
   useEffect(() => {
     let mounted = true
-    ;(async () => {
-      const base = import.meta.env.DEV ? 'http://localhost:3000' : ''
+    
+    const loadThumbnails = async () => {
       const entries = await Promise.all(models.map(async m => {
         try {
-          const res = await fetch(`/api/models/${m.id}/images`)
-          if (!res.ok) return [m.id, null]
-          const list = await res.json()
-          const url = list && list.length ? (list[0].startsWith('/') ? base + list[0] : list[0]) : null
-          return [m.id, url]
+          const images = getImagesForModel(m.id)
+          // Попробуем найти первое существующее изображение
+          for (const imgPath of images) {
+            try {
+              const response = await fetch(imgPath, { method: 'HEAD' })
+              if (response.ok) {
+                return [m.id, imgPath]
+              }
+            } catch (e) {
+              // Изображение не найдено, пробуем следующее
+            }
+          }
+          return [m.id, null]
         } catch (e) {
           return [m.id, null]
         }
       }))
+      
       if (!mounted) return
       const map = Object.fromEntries(entries)
       setThumbs(map)
-    })()
+    }
+    
+    loadThumbnails()
     return () => { mounted = false }
   }, [models])
 
@@ -95,7 +107,7 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
     if (flagFile) {
       return (
         <img 
-          src={`/src/img/icons/country/${flagFile}`} 
+          src={`/img/icons/country/${flagFile}`} 
           alt={`${country} flag`}
           className="country-flag"
         />

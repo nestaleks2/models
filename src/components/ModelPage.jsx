@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Slider from './Slider'
+import { getImagesForModel } from '../utils/images'
 // Импорты иконок соцсетей из src/img/icons
 import instagramIcon from '../img/icons/instagram.svg'
 import facebookIcon from '../img/icons/facebook.svg'
@@ -20,15 +21,22 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`/api/models/${model.id}/images`)
-        if (res.ok) {
-          const list = await res.json()
-          const base = import.meta.env.DEV ? 'http://localhost:3000' : ''
-          const normalized = list.map(u => (u && u.startsWith('/') ? base + u : u))
-          setImages(Array.from(new Set(normalized)))
-        } else {
-          setImages([])
+        const possibleImages = getImagesForModel(model.id)
+        const existingImages = []
+        
+        // Проверяем какие изображения действительно существуют
+        for (const imgPath of possibleImages) {
+          try {
+            const response = await fetch(imgPath, { method: 'HEAD' })
+            if (response.ok) {
+              existingImages.push(imgPath)
+            }
+          } catch (e) {
+            // Изображение не найдено
+          }
         }
+        
+        setImages(existingImages)
       } catch (e) {
         console.error('Failed to load images', e)
         setImages([])
@@ -139,7 +147,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     if (flagFile) {
       return (
         <img 
-          src={`/src/img/icons/country/${flagFile}`} 
+          src={`/img/icons/country/${flagFile}`} 
           alt={`${country} flag`}
           className="country-flag"
         />
