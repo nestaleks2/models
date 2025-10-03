@@ -31,6 +31,10 @@ coverage/
 dist/
 build/
 
+# Cache directories
+.cache/
+node_modules/.cache/
+
 # Environment variables
 .env
 .env.local
