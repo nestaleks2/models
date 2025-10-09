@@ -1,11 +1,46 @@
 import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import models from './data/models'
 import Gallery from './components/Gallery'
 import ModelPage from './components/ModelPage'
 import './App.css'
 
+function ModelPageWrapper({ lang }) {
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const model = models.find(m => m.id === parseInt(id))
+
+  const handleBack = () => {
+    navigate('/')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  if (!model) {
+    return (
+      <div className="error-page">
+        <h2>Модель не найдена</h2>
+        <button onClick={handleBack} className="back-button">
+          Вернуться к галерее
+        </button>
+      </div>
+    )
+  }
+
+  return <ModelPage model={model} onBack={handleBack} lang={lang} />
+}
+
+function GalleryWrapper({ lang }) {
+  const navigate = useNavigate()
+
+  const handleSelect = (id) => {
+    navigate(`/model/${id}`)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return <Gallery models={models} onSelect={handleSelect} lang={lang} />
+}
+
 export default function App() {
-  const [selectedId, setSelectedId] = useState(null)
   const [lang, setLang] = useState('ru')
   const [isLoading, setIsLoading] = useState(true)
 
@@ -14,16 +49,6 @@ export default function App() {
     const timer = setTimeout(() => setIsLoading(false), 500)
     return () => clearTimeout(timer)
   }, [])
-
-  const handleSelect = (id) => {
-    setSelectedId(id)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const handleBack = () => {
-    setSelectedId(null)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   const t = {
     en: { 
@@ -44,57 +69,52 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <div className="brand">
-            <h1 className="brand-title">{t[lang].title}</h1>
-          </div>
+    <Router basename="/models">
+      <div className="app">
+        <header className="app-header">
+          <div className="header-content">
+            <div className="brand">
+              <h1 className="brand-title">{t[lang].title}</h1>
+            </div>
 
-          <div className="controls">
-            <div className="lang-switcher">
-              <button
-                className={`lang-btn ${lang === 'en' ? 'active' : ''}`}
-                onClick={() => setLang('en')}
-                aria-label="Switch to English"
-              >
-                EN
-              </button>
-              <button
-                className={`lang-btn ${lang === 'ru' ? 'active' : ''}`}
-                onClick={() => setLang('ru')}
-                aria-label="Переключить на русский"
-              >
-                RU
-              </button>
+            <div className="controls">
+              <div className="lang-switcher">
+                <button
+                  className={`lang-btn ${lang === 'en' ? 'active' : ''}`}
+                  onClick={() => setLang('en')}
+                  aria-label="Switch to English"
+                >
+                  EN
+                </button>
+                <button
+                  className={`lang-btn ${lang === 'ru' ? 'active' : ''}`}
+                  onClick={() => setLang('ru')}
+                  aria-label="Переключить на русский"
+                >
+                  RU
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="app-main">
-        <div className="main-content">
-          {!selectedId && (
-            <Gallery models={models} onSelect={handleSelect} lang={lang} />
-          )}
+        <main className="app-main">
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={<GalleryWrapper lang={lang} />} />
+              <Route path="/model/:id" element={<ModelPageWrapper lang={lang} />} />
+            </Routes>
+          </div>
+        </main>
 
-          {selectedId && (
-            <ModelPage 
-              model={models.find(m => m.id === selectedId)} 
-              onBack={handleBack} 
-              lang={lang} 
-            />
-          )}
-        </div>
-      </main>
-
-      <footer className="app-footer">
-        <div className="footer-content">
-          <p className="footer-text">
-            © 2025
-          </p>
-        </div>
-      </footer>
-    </div>
+        <footer className="app-footer">
+          <div className="footer-content">
+            <p className="footer-text">
+              © 2025
+            </p>
+          </div>
+        </footer>
+      </div>
+    </Router>
   )
 }

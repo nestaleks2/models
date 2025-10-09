@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Slider from './Slider'
-import { getImagesForModel } from '../utils/images'
+import { getAvailableImages, getMainImageForModel } from '../utils/images'
 // Импорты иконок соцсетей
 import instagramIcon from '../img/icons/instagram.svg'
 import facebookIcon from '../img/icons/facebook.svg'
@@ -9,23 +9,38 @@ import youtubeIcon from '../img/icons/youtube.svg'
 import dropboxIcon from '../img/icons/dropbox.svg'
 import websiteIcon from '../img/icons/website.svg'
 import onlyfansIcon from '../img/icons/onlyfans.svg'
+import linkmeIcon from '../img/icons/linkme.png'
 
 export default function ModelPage({ model, onBack, lang = 'ru' }) {
   if (!model) return null
 
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
+  const [designMode, setDesignMode] = useState('classic') // 'classic' или 'models-de'
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxImage, setLightboxImage] = useState('')
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
   useEffect(() => {
     async function loadImages() {
       try {
         setLoading(true)
-        // Получаем изображения для модели (теперь функция возвращает только существующие)
-        const availableImages = getImagesForModel(model.id)
+        // Получаем только реально существующие изображения
+        let availableImages = await getAvailableImages(model.id)
+        
+        // Fallback: если не найдено ни одного изображения, используем основное
+        if (availableImages.length === 0) {
+          const mainImage = getMainImageForModel(model.id)
+          availableImages = [mainImage]
+        }
+        
         setImages(availableImages)
       } catch (e) {
         console.error('Failed to load images', e)
-        setImages([])
+        // В случае ошибки используем основное изображение
+        const mainImage = getMainImageForModel(model.id)
+        setImages([mainImage])
       } finally {
         setLoading(false)
       }
@@ -35,7 +50,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
 
   const labels = {
     en: {
-      back: '← Back to Gallery',
+      back: 'Back to Gallery',
       age: 'Age',
       height: 'Height',
       bodyType: 'Body Type',
@@ -56,7 +71,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
       loading: 'Loading...'
     },
     ru: {
-      back: '← Назад к галерее',
+      back: 'Назад к галерее',
       age: 'Возраст',
       height: 'Рост',
       bodyType: 'Тип фигуры',
@@ -104,10 +119,11 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     
     const flagFile = flagMap[country]
     if (flagFile) {
-      const basePath = import.meta.env.BASE_URL || '/models/'
+      // Импортируем флаг из src
+      const flagSrc = new URL(`../img/icons/country/${flagFile}`, import.meta.url).href
       return (
         <img 
-          src={`${basePath}img/icons/country/${flagFile}`} 
+          src={flagSrc} 
           alt={`${country} flag`}
           className="country-flag"
           loading="lazy"
@@ -125,11 +141,81 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     youtube: youtubeIcon,
     dropbox: dropboxIcon,
     website: websiteIcon,
-    onlyfans: onlyfansIcon
+    onlyfans: onlyfansIcon,
+    linkme: linkmeIcon
   }
+
+  // Отладка для проверки загрузки иконки LinkMe
+  console.log('LinkMe icon:', linkmeIcon)
 
   const getField = (key) => (lang === 'ru' ? (model[key + 'RU'] || model[key]) : model[key])
   const flag = getCountryFlag(model.country)
+
+  // Функции для lightbox
+  const openLightbox = (imageSrc) => {
+    setLightboxImage(imageSrc)
+    setLightboxOpen(true)
+    // Предотвращаем скролл body при открытом lightbox
+    document.body.style.overflow = 'hidden'
+  }
+
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+    setLightboxImage('')
+    // Восстанавливаем скролл body
+    document.body.style.overflow = 'auto'
+  }
+
+  const nextImage = () => {
+    const currentIndex = images.indexOf(lightboxImage)
+    const nextIndex = (currentIndex + 1) % images.length
+    setLightboxImage(images[nextIndex])
+  }
+
+  const prevImage = () => {
+    const currentIndex = images.indexOf(lightboxImage)
+    const prevIndex = (currentIndex - 1 + images.length) % images.length
+    setLightboxImage(images[prevIndex])
+  }
+
+  // Обработка клавиш для lightbox
+  React.useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (!lightboxOpen) return
+      
+      switch (e.key) {
+        case 'Escape':
+          closeLightbox()
+          break
+        case 'ArrowRight':
+          nextImage()
+          break
+        case 'ArrowLeft':
+          prevImage()
+          break
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyPress)
+    return () => document.removeEventListener('keydown', handleKeyPress)
+  }, [lightboxOpen, lightboxImage, images])
+
+  // Cleanup при размонтировании компонента
+  React.useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [])
+
+  // Отслеживание изменения размера окна
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   if (loading) {
     return (
@@ -140,7 +226,8 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     )
   }
 
-  return (
+  const renderClassicDesign = () => {
+    return (
     <div className="model-page">
       <button className="back-button" onClick={onBack}>
         {labels[lang].back}
@@ -328,5 +415,277 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
         </div>
       </div>
     </div>
+    )
+  }
+
+  const renderModelsDeDesign = () => {
+    return (
+      <div className="model-page-modern">
+        <div className="modern-header">
+          <button className="back-button-modern" onClick={onBack}>
+            ← {labels[lang].back}
+          </button>
+        </div>
+
+        {/* Header section - always on top */}
+        <div className="model-header-section">
+          <div className="model-name-section">
+            {/* Фото модели для мобильной версии (<768px) */}
+            <div className="mobile-model-photo">
+              {images.length > 0 && (
+                <img 
+                  src={images[0]} 
+                  alt={`${model.name} ${model.surname}`}
+                  className="mobile-photo"
+                />
+              )}
+            </div>
+            <div className="name-content">
+              <h1 className="modern-name">
+                {model.name}{getField('stageName') && ` "${getField('stageName')}"`} {model.surname}
+                {flag && <span className="flag-wrapper">{flag}</span>}
+              </h1>
+            </div>
+          </div>
+        </div>
+
+        <div className="modern-layout">
+          {/* Left sidebar with model info */}
+          <div className="modern-sidebar">
+            <div className="model-info-card">
+
+              <div className="model-stats-grid">
+                <div className="stat-row">
+                  <span className="stat-label">{labels[lang].age}</span>
+                  <span className="stat-value">{model.age}</span>
+                </div>
+                <div className="stat-row">
+                  <span className="stat-label">{labels[lang].height}</span>
+                  <span className="stat-value">{model.height} cm</span>
+                </div>
+                {model.measurements && (
+                  <div className="stat-row">
+                    <span className="stat-label">{labels[lang].measurements}</span>
+                    <span className="stat-value">{model.measurements}</span>
+                  </div>
+                )}
+                {getField('bodyType') && (
+                  <div className="stat-row">
+                    <span className="stat-label">{labels[lang].bodyType}</span>
+                    <span className="stat-value">{getField('bodyType')}</span>
+                  </div>
+                )}
+                {getField('hairColor') && (
+                  <div className="stat-row">
+                    <span className="stat-label">{labels[lang].hairColor}</span>
+                    <span className="stat-value">{getField('hairColor')}</span>
+                  </div>
+                )}
+                {getField('skinColor') && (
+                  <div className="stat-row">
+                    <span className="stat-label">{labels[lang].skinColor}</span>
+                    <span className="stat-value">{getField('skinColor')}</span>
+                  </div>
+                )}
+                {getField('country') && (
+                  <div className="stat-row">
+                    <span className="stat-label">{labels[lang].country}</span>
+                    <span className="stat-value">{getField('country')}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Additional info */}
+              {(getField('style') || getField('hobbies') || getField('features')) && (
+                <div className="additional-info">
+                  {getField('style') && (
+                    <div className="info-block">
+                      <h4 className="info-title">{labels[lang].style}</h4>
+                      <p className="info-text">{getField('style')}</p>
+                    </div>
+                  )}
+                  {getField('hobbies') && (
+                    <div className="info-block">
+                      <h4 className="info-title">{labels[lang].hobbies}</h4>
+                      <p className="info-text">{getField('hobbies')}</p>
+                    </div>
+                  )}
+                  {getField('features') && (
+                    <div className="info-block">
+                      <h4 className="info-title">{labels[lang].features}</h4>
+                      <p className="info-text">{getField('features')}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Biography */}
+              {(model.bioRU || model.bioEN) && (
+                <div className="bio-section">
+                  <h4 className="bio-title">{labels[lang].about}</h4>
+                  <p className="bio-text-modern">
+                    {lang === 'ru' ? (model.bioRU || model.bioEN) : (model.bioEN || model.bioRU)}
+                  </p>
+                </div>
+              )}
+
+              {/* Social Media */}
+              {model.social && (
+                <div className="social-section-modern">
+                  <h4 className="social-title-modern">{labels[lang].socialMedia}</h4>
+                  <div className="social-links-modern">
+                    {Object.entries(model.social).map(([platform, url]) => {
+                      if (!url) return null
+                      const iconSrc = socialIcons[platform]
+                      return (
+                        <a 
+                          key={platform} 
+                          href={url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="social-link-modern"
+                          title={platform.charAt(0).toUpperCase() + platform.slice(1)}
+                        >
+                          {iconSrc && (
+                            <img 
+                              src={iconSrc} 
+                              alt={platform} 
+                              className="social-icon-modern"
+                            />
+                          )}
+                        </a>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right side with photos - Masonry Grid */}
+          <div className="modern-gallery">
+            {images.length > 0 ? (
+              <div 
+                className="masonry-grid"
+                style={{
+                  columns: Math.min(images.length, windowWidth <= 480 ? 1 : 2),
+                  columnGap: windowWidth <= 480 ? '0.5rem' : '1rem'
+                }}
+              >
+                {images.map((img, index) => (
+                  <div 
+                    key={index}
+                    className="masonry-item"
+                    onClick={() => openLightbox(img)}
+                  >
+                    <img 
+                      src={img} 
+                      alt={`${model.name} ${index + 1}`}
+                      className="masonry-image"
+                      onError={(e) => {
+                        e.target.parentElement.style.display = 'none'
+                      }}
+                    />
+                    <div className="image-overlay">
+                      <div className="zoom-icon">🔍</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="photo-placeholder">
+                <span className="placeholder-icon">📷</span>
+                <span className="placeholder-text">No photos available</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {/* Используем только современный дизайн */}
+      {renderModelsDeDesign()}
+      
+      {/* Lightbox */}
+      {lightboxOpen && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-container">
+            <button 
+              className="lightbox-close" 
+              onClick={(e) => {
+                e.stopPropagation()
+                closeLightbox()
+              }}
+              aria-label="Close lightbox"
+            >
+              ×
+            </button>
+            
+            {images.length > 1 && (
+              <>
+                <button 
+                  className="lightbox-nav lightbox-prev" 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    prevImage()
+                  }}
+                  aria-label="Previous image"
+                >
+                  ‹
+                </button>
+                <button 
+                  className="lightbox-nav lightbox-next" 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    nextImage()
+                  }}
+                  aria-label="Next image"
+                >
+                  ›
+                </button>
+              </>
+            )}
+            
+            <img 
+              src={lightboxImage} 
+              alt={`${model.name} full size`}
+              className="lightbox-image"
+              loading="eager"
+              onClick={(e) => e.stopPropagation()}
+              onError={(e) => {
+                console.warn('Failed to load lightbox image:', lightboxImage)
+                e.target.style.display = 'none'
+              }}
+            />
+            
+            <div 
+              className="lightbox-counter"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {images.indexOf(lightboxImage) + 1} / {images.length}
+            </div>
+            
+            {/* Предзагрузка соседних изображений */}
+            {images.length > 1 && (
+              <>
+                <link 
+                  rel="preload" 
+                  as="image" 
+                  href={images[(images.indexOf(lightboxImage) + 1) % images.length]} 
+                />
+                <link 
+                  rel="preload" 
+                  as="image" 
+                  href={images[(images.indexOf(lightboxImage) - 1 + images.length) % images.length]} 
+                />
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   )
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { getImagesForModel } from '../utils/images'
+import { getMainImageForModel } from '../utils/images'
 
 export default function Gallery({ models, onSelect, lang = 'ru' }) {
   const [thumbs, setThumbs] = useState({})
   const [sortBy, setSortBy] = useState('name')
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('created')
 
   useEffect(() => {
     let mounted = true
@@ -13,14 +14,16 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
       setLoading(true)
       const thumbnailsMap = {}
       
-      // Создаем карту миниатюр напрямую без проверки HEAD запросов,
-      // так как теперь getImagesForModel возвращает только существующие файлы
-      models.forEach(model => {
-        const images = getImagesForModel(model.id)
-        if (images.length > 0) {
-          thumbnailsMap[model.id] = images[0] // первое изображение как главное
+      // Создаем карту миниатюр используя основные изображения моделей
+      await Promise.all(models.map(async model => {
+        try {
+          const mainImage = await getMainImageForModel(model.id)
+          thumbnailsMap[model.id] = mainImage
+        } catch (error) {
+          console.warn(`Failed to load thumbnail for model ${model.id}:`, error)
+          thumbnailsMap[model.id] = `/src/img/models/${model.id}/image.jpg`
         }
-      })
+      }))
       
       if (!mounted) return
       
@@ -40,7 +43,9 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
       name: 'Name',
       countrySort: 'Country',
       loading: 'Loading...',
-      totalModels: 'Total models'
+      totalModels: 'Total models',
+      created: 'Created',
+      notCreated: 'Not created'
     },
     ru: { 
       age: 'Возрасту', 
@@ -49,13 +54,26 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
       name: 'Имени',
       countrySort: 'Стране',
       loading: 'Загрузка...',
-      totalModels: 'Всего моделей'
+      totalModels: 'Всего моделей',
+      created: 'Создано',
+      notCreated: 'Не создано'
     }
   }
 
-  // Мемоизированная функция сортировки для оптимизации
-  const sortedModels = useMemo(() => {
-    return [...models].sort((a, b) => {
+  // Мемоизированная фильтрация и сортировка моделей
+  const filteredAndSortedModels = useMemo(() => {
+    // Сначала фильтруем модели по активной вкладке
+    const filteredModels = models.filter(model => {
+      if (activeTab === 'created') {
+        return model.created === 'yes'
+      } else if (activeTab === 'notCreated') {
+        return model.created === 'no'
+      }
+      return true
+    })
+
+    // Затем сортируем отфильтрованные модели
+    return filteredModels.sort((a, b) => {
       switch (sortBy) {
         case 'name':
           return a.name.localeCompare(b.name)
@@ -69,7 +87,7 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
           return 0
       }
     })
-  }, [models, sortBy, lang])
+  }, [models, sortBy, lang, activeTab])
 
   // Функция для получения флага страны с правильным базовым путем
   const getCountryFlag = (country) => {
@@ -97,11 +115,11 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
     
     const flagFile = flagMap[country]
     if (flagFile) {
-      // Используем правильный базовый путь для GitHub Pages
-      const basePath = import.meta.env.BASE_URL || '/models/'
+      // Импортируем флаг из src
+      const flagSrc = new URL(`../img/icons/country/${flagFile}`, import.meta.url).href
       return (
         <img 
-          src={`${basePath}img/icons/country/${flagFile}`} 
+          src={flagSrc} 
           alt={`${country} flag`}
           className="country-flag"
           loading="lazy"
@@ -128,7 +146,7 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
             {lang === 'ru' ? 'Галерея моделей' : 'Models Gallery'}
           </h2>
           <p className="gallery-count">
-            {labels[lang].totalModels}: <span className="count-number">{models.length}</span>
+            {labels[lang].totalModels}: <span className="count-number">{filteredAndSortedModels.length}</span>
           </p>
         </div>
         
@@ -148,8 +166,23 @@ export default function Gallery({ models, onSelect, lang = 'ru' }) {
         </div>
       </div>
 
+      <div className="gallery-tabs">
+        <button 
+          className={`tab-button ${activeTab === 'created' ? 'active' : ''}`}
+          onClick={() => setActiveTab('created')}
+        >
+          {labels[lang].created}
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'notCreated' ? 'active' : ''}`}
+          onClick={() => setActiveTab('notCreated')}
+        >
+          {labels[lang].notCreated}
+        </button>
+      </div>
+
       <div className="gallery-grid">
-        {sortedModels.map((model) => {
+        {filteredAndSortedModels.map((model) => {
           const thumb = thumbs[model.id]
           const stageName = lang === 'ru' ? (model.stageNameRU || model.stageName) : model.stageName
           const countryName = lang === 'ru' ? (model.countryRU || model.country) : model.country

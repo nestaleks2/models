@@ -5,6 +5,11 @@ export default function Slider({ images = [] }) {
   const [isPlaying, setIsPlaying] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const count = Math.max(images.length, 1)
+  
+  // Логирование для отладки
+  React.useEffect(() => {
+    console.log(`Slider received ${images.length} images:`, images)
+  }, [images])
   const timerRef = useRef(null)
   const touchStartRef = useRef(null)
   const touchEndRef = useRef(null)
