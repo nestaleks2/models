@@ -145,8 +145,6 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     linkme: linkmeIcon
   }
 
-  // Отладка для проверки загрузки иконки LinkMe
-  console.log('LinkMe icon:', linkmeIcon)
 
   const getField = (key) => (lang === 'ru' ? (model[key + 'RU'] || model[key]) : model[key])
   const flag = getCountryFlag(model.country)

@@ -76,7 +76,7 @@ async function fetchDirectoryContents(modelId) {
             return fileList.map(filename => `${basePath}img/models/${modelId}/${filename}`)
         }
     } catch (error) {
-        console.log('JSON файл не найден, используем брутфорс поиск')
+        // JSON файл не найден, используем брутфорс поиск
     }
     
     // Fallback: пробуем стандартные API endpoints
@@ -90,7 +90,7 @@ async function fetchDirectoryContents(modelId) {
             })
         }
     } catch (error) {
-        console.log('API не доступно, используем брутфорс поиск')
+        // API не доступно, используем брутфорс поиск
     }
     return null
 }
@@ -131,9 +131,7 @@ async function bruteForceScan(modelId) {
     const foundFiles = []
     
     const isDev = import.meta.env.DEV
-    if (isDev) {
-        console.log(`Starting comprehensive scan for model ${modelId}`)
-    }
+    // Starting comprehensive scan for model in development
     
     // Генерируем максимально полный список возможных имен
     const allPossibleNames = generateComprehensivePatterns()
@@ -161,23 +159,17 @@ async function bruteForceScan(modelId) {
         batchResults.forEach(result => {
             if (result.status === 'fulfilled' && result.value.exists) {
                 foundFiles.push(result.value.fullPath)
-                if (isDev) {
-                    console.log(`✓ Found: ${result.value.fullPath}`)
-                }
+                // Found image file
             }
         })
         
         checkedCount += batchPromises.length
         
-        if (isDev && checkedCount % 1000 === 0) {
-            console.log(`Checked ${checkedCount} files, found ${foundFiles.length} images`)
-        }
+        // Progress tracking for development
         
         // Если нашли достаточно изображений, останавливаемся
         if (foundFiles.length >= 50) {
-            if (isDev) {
-                console.log(`Found ${foundFiles.length} images, stopping scan`)
-            }
+            // Found enough images, stopping scan
             break
         }
     }
@@ -185,9 +177,7 @@ async function bruteForceScan(modelId) {
     // Кешируем результат
     discoveredFilesCache.set(`discovered_${modelId}`, foundFiles)
     
-    if (isDev) {
-        console.log(`Scan complete: ${foundFiles.length} images found for model ${modelId}`)
-    }
+    // Scan complete
     
     return foundFiles
 }
@@ -409,7 +399,7 @@ function generateComprehensivePatterns() {
         }
     }
     
-    console.log(`Generated ${patterns.length} comprehensive patterns`)
+    // Generated comprehensive patterns
     return [...new Set(patterns)]
 }
 
@@ -439,13 +429,13 @@ export async function checkImageExists(imagePath) {
         
         // Таймаут для зависших изображений
         const timeout = setTimeout(() => {
-            console.log(`⏰ Timeout for: ${imagePath}`)
+            // Timeout for image check
             resolve(false)
         }, 3000)
         
         img.onload = () => {
             clearTimeout(timeout)
-            console.log(`✅ Image exists: ${imagePath}`)
+            // Image exists
             resolve(true)
         }
         
@@ -481,9 +471,7 @@ export async function getAvailableImages(modelId) {
         
         if (images.length > 0) {
             const isDev = import.meta.env.DEV
-            if (isDev) {
-                console.log(`Vite glob found ${images.length} images for model ${modelId}:`, images)
-            }
+            // Vite glob found images
             return images
         }
     } catch (error) {
