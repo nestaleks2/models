@@ -10,6 +10,7 @@ import dropboxIcon from '../img/icons/dropbox.svg'
 import websiteIcon from '../img/icons/website.svg'
 import onlyfansIcon from '../img/icons/onlyfans.svg'
 import linkmeIcon from '../img/icons/linkme.png'
+import fanvueIcon from '../img/icons/fanvue.png'
 
 export default function ModelPage({ model, onBack, lang = 'ru' }) {
   if (!model) return null
@@ -142,7 +143,8 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     dropbox: dropboxIcon,
     website: websiteIcon,
     onlyfans: onlyfansIcon,
-    linkme: linkmeIcon
+    linkme: linkmeIcon,
+    fanvue: fanvueIcon
   }
 
 
