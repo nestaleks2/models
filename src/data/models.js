@@ -219,7 +219,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/claraalpinebecker', facebook: '', x: 'https://x.com/claraalpinebeck', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/claraalpinebecker', linkme: 'https://link.me/claraalpinebecker', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/claraalpinebecker', facebook: '', x: 'https://x.com/claraalpinebeck', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/claraalpinebecker', linkme: 'https://link.me/claraalpinebecker', fanvue: 'https://www.fanvue.com/claraalpinebecker' },
     bioEN: `From Munich, Clara Mist represents the harmony of Scandinavian minimalism and German precision. Passionate about cycling through the Alps, she also designs modern interiors in her free time. Her high cheekbones and serene aura make her a muse for minimalist fashion brands. She believes in beauty through simplicity.`,
     bioRU: `Родом из Мюнхена, Клара Мист сочетает скандинавский минимализм и немецкую точность. Она увлекается велопоездками по Альпам и создаёт современные интерьеры в свободное время. Высокие скулы и спокойное излучение сделали её музой для брендов минимализма. Она верит в красоту через простоту.`
   },
@@ -251,7 +251,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/oliviashinerossi/', facebook: '', x: 'https://x.com/rossi_oliv35230', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/oliviashinerossi', linkme: 'https://link.me/oliviashinerossi', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/oliviashinerossi/', facebook: '', x: 'https://x.com/rossi_oliv35230', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/oliviashinerossi', linkme: 'https://link.me/oliviashinerossi', fanvue: 'https://www.fanvue.com/oliviashinerossi' },
     bioEN: `Olivia Shine was born in Florence, the cradle of Renaissance art. She studied painting before turning to fashion, carrying elegance from canvas to runway. Her tattoo on the shoulder symbolizes strength and independence. Known for her refined style, she is often the face of Italian haute couture.`,
     bioRU: `Оливия Шайн родилась во Флоренции, колыбели искусства Ренессанса. Она изучала живопись, прежде чем прийти в моду, перенося элегантность с холста на подиум. Татуировка на плече символизирует силу и независимость. Её изысканный стиль сделал её лицом итальянской высокой моды.`
   },
@@ -283,7 +283,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/evalunamelnyk/', facebook: '', x: 'https://x.com/evalunamelnyk', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/evalunamelnyk', linkme: 'https://link.me/evalunamelnyk', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/evalunamelnyk/', facebook: '', x: 'https://x.com/evalunamelnyk', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/evalunamelnyk', linkme: 'https://link.me/evalunamelnyk', fanvue: 'https://www.fanvue.com/evalunamelnyk' },
     bioEN: `Eva Star grew up in Kyiv, surrounded by Ukrainian traditions. She loves embroidery, which she sees as a way of connecting with her ancestors. Ballroom dancing taught her grace and confidence, making her shine in romantic fashion. Her dimples and soft aura gave her the nickname "Star" - a light in every room.`,
     bioRU: `Ева Стар выросла в Киеве среди украинских традиций. Она любит вышивку, считая её связью с предками. Бальные танцы подарили ей грацию и уверенность, благодаря чему она сияет в романтических образах. Ямочки на щеках и нежная аура дали ей прозвище "Звезда" — свет в каждом помещении.`
   },
@@ -315,7 +315,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/lilybijoulefevre/', facebook: '', x: 'https://x.com/lilybijoulef', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/lilybijoulefevre', linkme: 'https://link.me/lilybijoulefevre', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/lilybijoulefevre/', facebook: '', x: 'https://x.com/lilybijoulef', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/lilybijoulefevre', linkme: 'https://link.me/lilybijoulefevre', fanvue: 'https://www.fanvue.com/lilybijoulefevre' },
     bioEN: `From Paris, Lily Rose embodies Parisian chic. A ballet dancer in her youth, she carries grace in every step on the runway. Her fascination with perfumery led her to create her own fragrance line. The beauty mark above her lip became her timeless signature, reminiscent of classic French icons.`,
     bioRU: `Из Парижа, Лили Роуз олицетворяет парижский шик. В юности она занималась балетом, и её грация чувствуется в каждом движении на подиуме. Увлечение парфюмерией вдохновило её создать собственную линию ароматов. Родинка над губой стала её фирменной чертой, напоминающей об иконах французской классики.`
   },
@@ -571,7 +571,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/laylamiragemalek/', facebook: '', x: 'https://x.com/layla_mirage', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/laylamiragemalek', linkme: 'https://link.me/laylamiragemalek', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/laylamiragemalek/', facebook: '', x: 'https://x.com/layla_mirage', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/laylamiragemalek', linkme: 'https://link.me/laylamiragemalek', fanvue: 'https://www.fanvue.com/laylamiragemalek' },
     bioEN: `Born in Beirut, Layla Mirage blends Arab mystique with contemporary fashion. She masters belly dancing, using its fluidity in her poses. Henna art adorns her during festivals, inspiring intricate designs. Her kohl-lined eyes create a mesmerizing gaze, making "Mirage" a fitting name for her enchanting allure.`,
     bioRU: `Родившаяся в Бейруте, Лейла Мираж смешивает арабскую мистику с современной модой. Она мастерски танцует танец живота, используя его плавность в позах. Искусство хны украшает её на фестивалях, вдохновляя на сложные дизайны. Подведённые глаза создают завораживающий взгляд, делая "Мираж" подходящим именем для её чарующего обаяния.`
   },
