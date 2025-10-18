@@ -27,7 +27,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/meiskyzhang/', facebook: '', x: 'https://x.com/meiskyzhang', youtube: 'http://www.youtube.com/@meiskyzhang', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/u527214172', linkme: 'https://link.me/meiskyzhang', fanvue: 'https://fanvue.com/meiskyzhang' },
+    social: { instagram: 'https://www.instagram.com/meiskyzhang/', facebook: '', x: 'https://x.com/meiskyzhang', youtube: 'http://www.youtube.com/@meiskyzhang', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/u527214172', linkme: 'https://link.me/meiskyzhang', fanvue: 'https://www.fanvue.com/meiskyzhang' },
     bioEN: `Born in Shanghai, Mei Lotus grew up near the coast, where she fell in love with surfing. Her minimalist fashion sense reflects her calm personality and Zen-inspired lifestyle. She often practices yoga at sunrise, believing it balances her energy for modeling and life. Her freckles, considered unusual in Chinese beauty standards, became her signature charm, symbolizing her individuality.`,
     bioRU: `Родившаяся в Шанхае, Мэй Лотус выросла у моря, где влюбилась в серфинг. Её минималистичный стиль отражает спокойствие и дзен-философию жизни. На рассвете она часто практикует йогу, веря, что это наполняет её энергией для подиума и жизни. Веснушки, редкие для китайских стандартов красоты, стали её визитной карточкой и символом уникальности.`
   },
@@ -59,7 +59,7 @@ const models = [
     sexualPreferences: "Bisexual",
     sexualPreferencesRU: "Бисексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/hanabloomkim/', facebook: '', x: 'https://x.com/hanabloomkim', youtube: 'https://www.youtube.com/@HanaBloomKim', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/hanabloomkim', linkme: 'https://link.me/hanabloomkim', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/hanabloomkim/', facebook: '', x: 'https://x.com/hanabloomkim', youtube: 'https://www.youtube.com/@HanaBloomKim', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/hanabloomkim', linkme: 'https://link.me/hanabloomkim', fanvue: 'https://www.fanvue.com/hanabloomkim' },
     bioEN: `Coming from Seoul, Hana Bloom embodies the modern Korean wave. Her passion for K-pop dancing and street fashion quickly drew attention in the modeling industry. Always with a camera in hand, she documents her travels and performances, sharing her world with fans. Her delicate wrist tattoo represents "Bloom," a constant reminder to grow and shine.`,
     bioRU: `Родом из Сеула, Хана Блум олицетворяет современную корейскую волну. Её любовь к K-pop танцам и уличной моде быстро привлекла внимание модельного мира. Всегда с камерой в руках, она запечатлевает свои путешествия и выступления, делясь ими с поклонниками. Тонкая татуировка на запястье с надписью "Bloom" напоминает ей всегда расти и сиять.`
   },
@@ -123,7 +123,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/jacksonniaember/', facebook: '', x: 'https://x.com/niaemberjackson', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/emberniajackson', linkme: 'https://link.me/niaemberjackson', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/jacksonniaember/', facebook: '', x: 'https://x.com/niaemberjackson', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/emberniajackson', linkme: 'https://link.me/niaemberjackson', fanvue: 'https://www.fanvue.com/niaemberjackson' },
     bioEN: `From Kingston, Nia Ember grew up with music and skateboards on the streets of Jamaica. Her streetwear style represents freedom and rebellion. The mole on her cheek, once a childhood insecurity, is now her beauty mark in campaigns worldwide. Her nickname "Ember" reflects her fiery energy that ignites passion wherever she goes.`,
     bioRU: `Из Кингстона, Ниа Эмбер выросла среди музыки и скейтбордов на улицах Ямайки. Её стиль стритвира олицетворяет свободу и бунт. Родинка на щеке, некогда её комплекс, теперь стала визитной чертой в мировых кампаниях. Её сценическое имя "Ember" символизирует огненную энергию, зажигающую сердца вокруг.`
   },
@@ -155,7 +155,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/emily_dawn_davis', facebook: '', x: 'https://x.com/emilydawndavis', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/emilydawndavis', linkme: 'https://link.me/emilydawndavis', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/emily_dawn_davis', facebook: '', x: 'https://x.com/emilydawndavis', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/emilydawndavis', linkme: 'https://link.me/emilydawndavis', fanvue: 'https://www.fanvue.com/emilydavisdawn' },
     bioEN: `Born in Boston, Emily Dawn grew up riding horses on her family's farm. With a love for literature, she often blends classic elegance into her modeling work. Her freckles give her a natural charm, making her stand out in haute couture shows. She believes each dawn is a new beginning, hence her stage name.`,
     bioRU: `Родом из Бостона, Эмили Доун выросла среди лошадей на ферме своей семьи. Её любовь к литературе отражается в классической элегантности образов. Веснушки придают естественное очарование, выделяя её даже на подиумах высокой моды. Она верит, что каждый рассвет — это новое начало, что и дало ей сценическое имя.`
   },
@@ -411,7 +411,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/ashleyblazethompson', facebook: '', x: 'https://x.com/ashleyblazethom', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/ashleyblazethompson', linkme: 'https://link.me/ashleyblazethompson', fanvue: '' },
+    social: { instagram: 'https://www.instagram.com/ashleyblazethompson', facebook: '', x: 'https://x.com/ashleyblazethom', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/ashleyblazethompson', linkme: 'https://link.me/ashleyblazethompson', fanvue: 'https://www.fanvue.com/ashleyblazethompson' },
     bioEN: `Raised in New York, Ashley Blaze channels her rockstar dreams into bold fashion statements. She plays guitar in her downtime, composing songs inspired by city lights. Her nose ring adds an edgy flair to her athletic build. "Blaze" embodies her fiery personality that lights up every photoshoot and runway.`,
     bioRU: `Выросшая в Нью-Йорке, Эшли Блейз воплощает мечты о рок-звезде в смелых модных образах. В свободное время она играет на гитаре, сочиняя песни под вдохновением городских огней. Кольцо в носу добавляет эджевости её атлетической фигуре. "Блейз" отражает её огненный характер, зажигающий каждую фотосессию и подиум.`
   },
