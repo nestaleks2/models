@@ -11,6 +11,8 @@ import websiteIcon from '../img/icons/website.svg'
 import onlyfansIcon from '../img/icons/onlyfans.svg'
 import linkmeIcon from '../img/icons/linkme.png'
 import fanvueIcon from '../img/icons/fanvue.png'
+import tiktokIcon from '../img/icons/tiktok.svg'
+import telegramIcon from '../img/icons/telegram.svg'
 
 export default function ModelPage({ model, onBack, lang = 'ru' }) {
   if (!model) return null
@@ -144,7 +146,9 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     website: websiteIcon,
     onlyfans: onlyfansIcon,
     linkme: linkmeIcon,
-    fanvue: fanvueIcon
+    fanvue: fanvueIcon,
+    tiktok: tiktokIcon,
+    telegram: telegramIcon
   }
 
 
