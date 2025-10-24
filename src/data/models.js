@@ -27,7 +27,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/meiskyzhang/', facebook: '', x: 'https://x.com/meiskyzhang', youtube: 'http://www.youtube.com/@meiskyzhang', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/u527214172', linkme: 'https://link.me/meiskyzhang', fanvue: 'https://www.fanvue.com/meiskyzhang', tiktok: 'https://www.tiktok.com/@meiskyzhang', telegram: '' },
+    social: { instagram: 'https://www.instagram.com/meiskyzhang/', facebook: '', x: 'https://x.com/meiskyzhang', youtube: 'http://www.youtube.com/@meiskyzhang', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/u527214172', linkme: 'https://link.me/meiskyzhang', fanvue: 'https://www.fanvue.com/meiskyzhang', tiktok: 'https://www.tiktok.com/@meiskyzhang', telegram: 'https://t.me/meiskyzhang' },
     bioEN: `Born in Shanghai, Mei Lotus grew up near the coast, where she fell in love with surfing. Her minimalist fashion sense reflects her calm personality and Zen-inspired lifestyle. She often practices yoga at sunrise, believing it balances her energy for modeling and life. Her freckles, considered unusual in Chinese beauty standards, became her signature charm, symbolizing her individuality.`,
     bioRU: `Родившаяся в Шанхае, Мэй Лотус выросла у моря, где влюбилась в серфинг. Её минималистичный стиль отражает спокойствие и дзен-философию жизни. На рассвете она часто практикует йогу, веря, что это наполняет её энергией для подиума и жизни. Веснушки, редкие для китайских стандартов красоты, стали её визитной карточкой и символом уникальности.`
   },
@@ -251,7 +251,7 @@ const models = [
     sexualPreferences: "Heterosexual",
     sexualPreferencesRU: "Гетеросексуальная",
     created: "yes",
-    social: { instagram: 'https://www.instagram.com/oliviashinerossi/', facebook: '', x: 'https://x.com/rossi_oliv35230', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/oliviashinerossi', linkme: 'https://link.me/oliviashinerossi', fanvue: '', tiktok: '', telegram: '' },
+    social: { instagram: 'https://www.instagram.com/oliviashinerossi/', facebook: '', x: 'https://x.com/rossi_oliv35230', youtube: '', dropbox: '', website: '', onlyfans: 'https://onlyfans.com/oliviashinerossi', linkme: 'https://link.me/oliviashinerossi', fanvue: 'https://www.fanvue.com/oliviashinerossi', tiktok: 'https://www.tiktok.com/@oliviashine43', telegram: 'https://t.me/oliviashinerossi' },
     bioEN: `Olivia Shine was born in Florence, the cradle of Renaissance art. She studied painting before turning to fashion, carrying elegance from canvas to runway. Her tattoo on the shoulder symbolizes strength and independence. Known for her refined style, she is often the face of Italian haute couture.`,
     bioRU: `Оливия Шайн родилась во Флоренции, колыбели искусства Ренессанса. Она изучала живопись, прежде чем прийти в моду, перенося элегантность с холста на подиум. Татуировка на плече символизирует силу и независимость. Её изысканный стиль сделал её лицом итальянской высокой моды.`
   },
