@@ -1,0 +1,269 @@
+/* Events Page Styles */
+.events-page {
+  min-height: 100vh;
+  background: var(--bg-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+  padding: 20px;
+  color: white;
+}
+
+.events-header {
+  margin-bottom: 30px;
+}
+
+.events-header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.back-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.events-title {
+  font-size: 2.5rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.events-filters {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.filter-select {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.filter-select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.filter-select option {
+  background: #2a2a2a;
+  color: white;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.event-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.event-card:hover::before {
+  left: 100%;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.event-title {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  flex: 1;
+  min-width: 200px;
+}
+
+.event-season {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.event-model {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.event-location,
+.event-details,
+.event-clothing,
+.event-photo-location,
+.event-adult {
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.event-location strong,
+.event-details strong,
+.event-clothing strong,
+.event-photo-location strong,
+.event-adult strong,
+.event-model strong {
+  color: rgba(255, 255, 255, 1);
+  font-weight: 700;
+}
+
+.event-adult {
+  background: rgba(255, 192, 203, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 4px solid rgba(255, 192, 203, 0.5);
+  margin-top: 15px;
+}
+
+.no-events {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.no-events p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .events-page {
+    padding: 15px;
+  }
+  
+  .events-title {
+    font-size: 2rem;
+  }
+  
+  .events-header-content {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .events-filters {
+    padding: 15px;
+  }
+  
+  .filter-group {
+    min-width: auto;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .event-card {
+    padding: 20px;
+  }
+  
+  .event-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .event-title {
+    min-width: auto;
+    margin-bottom: 10px;
+  }
+  
+  .event-season {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .events-page {
+    padding: 10px;
+  }
+  
+  .events-title {
+    font-size: 1.8rem;
+  }
+  
+  .event-card {
+    padding: 15px;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+}

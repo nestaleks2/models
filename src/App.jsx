@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from '
 import models from './data/models'
 import Gallery from './components/Gallery'
 import ModelPage from './components/ModelPage'
+import EventsPage from './components/EventsPage'
 import './App.css'
 
 function ModelPageWrapper({ lang }) {
@@ -38,6 +39,17 @@ function GalleryWrapper({ lang }) {
   }
 
   return <Gallery models={models} onSelect={handleSelect} lang={lang} />
+}
+
+function EventsPageWrapper({ lang }) {
+  const navigate = useNavigate()
+
+  const handleBack = () => {
+    navigate('/')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return <EventsPage lang={lang} onBack={handleBack} />
 }
 
 export default function App() {
@@ -103,6 +115,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<GalleryWrapper lang={lang} />} />
               <Route path="/model/:id" element={<ModelPageWrapper lang={lang} />} />
+              <Route path="/events" element={<EventsPageWrapper lang={lang} />} />
             </Routes>
           </div>
         </main>

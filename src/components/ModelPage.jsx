@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Slider from './Slider'
 import { getAvailableImages, getMainImageForModel } from '../utils/images'
 // Импорты иконок соцсетей
@@ -17,6 +18,7 @@ import telegramIcon from '../img/icons/telegram.svg'
 export default function ModelPage({ model, onBack, lang = 'ru' }) {
   if (!model) return null
 
+  const navigate = useNavigate()
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
   const [designMode, setDesignMode] = useState('classic') // 'classic' или 'models-de'
@@ -54,6 +56,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
   const labels = {
     en: {
       back: 'Back to Gallery',
+      events: 'Events',
       age: 'Age',
       height: 'Height',
       bodyType: 'Body Type',
@@ -75,6 +78,7 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
     },
     ru: {
       back: 'Назад к галерее',
+      events: 'События',
       age: 'Возраст',
       height: 'Рост',
       bodyType: 'Тип фигуры',
@@ -154,6 +158,11 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
 
   const getField = (key) => (lang === 'ru' ? (model[key + 'RU'] || model[key]) : model[key])
   const flag = getCountryFlag(model.country)
+
+  // Events functionality
+  const goToEvents = () => {
+    navigate('/events')
+  }
 
   // Функции для lightbox
   const openLightbox = (imageSrc) => {
@@ -449,6 +458,17 @@ export default function ModelPage({ model, onBack, lang = 'ru' }) {
                 {model.name}{getField('stageName') && ` "${getField('stageName')}"`} {model.surname}
                 {flag && <span className="flag-wrapper">{flag}</span>}
               </h1>
+            </div>
+            
+            {/* Events Button */}
+            <div className="events-button-section">
+              <button 
+                className="events-button"
+                onClick={goToEvents}
+                title={labels[lang].events}
+              >
+                🎭 {labels[lang].events}
+              </button>
             </div>
           </div>
         </div>
