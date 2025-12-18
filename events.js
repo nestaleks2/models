@@ -499,105 +499,105 @@ const events = [
     photoLocation: "Under northern lights; with reindeer in snowy forest; in ice hotel chambers",
     adultIdea: "Arctic royal fantasy in ice palace with northern lights backdrop (21+)"
 },
-{
+{ 
     id: 51,
-season: "August",
-event: "Croatian Island Hopping",
-location: "Adriatic Coast, Croatia",
-details: "Island exploration; crystal clear waters; medieval coastal towns; local seafood cuisine; sailing adventures",
-clothing: "Mediterranean summer fashion; designer beachwear; light beach dresses; comfortable sandals; nautical accessories",
-photoLocation: "On pristine Croatian beaches; at medieval stone towns; on sailing boats",
-adultIdea: "Adriatic sea goddess on secluded beach with crystal waters (18+)"
+    season: "August",
+    event: "Croatian Island Hopping",
+    location: "Adriatic Coast, Croatia",
+    details: "Island exploration; crystal clear waters; medieval coastal towns; local seafood cuisine; sailing adventures",
+    clothing: "Mediterranean summer fashion; designer beachwear; light beach dresses; comfortable sandals; nautical accessories",
+    photoLocation: "On pristine Croatian beaches; at medieval stone towns; on sailing boats",
+    adultIdea: "Adriatic sea goddess on secluded beach with crystal waters (18+)"
 },
-{
+{ 
     id: 52,
-season: "October",
-event: "Budapest Thermal Baths Wellness",
-location: "Széchenyi Thermal Baths, Budapest, Hungary",
-details: "Thermal spa treatments; Hungarian culture immersion; Danube river cruises; traditional Hungarian cuisine; architectural heritage tours",
-clothing: "Elegant spa wear; comfortable robes; minimal jewelry; natural skincare; thermal pool attire",
-photoLocation: "In historic thermal baths; at Budapest Parliament; on Danube riverbank",
-adultIdea: "Hungarian thermal goddess with steam and warm lighting (21+)"
+    season: "October",
+    event: "Budapest Thermal Baths Wellness",
+    location: "Széchenyi Thermal Baths, Budapest, Hungary",
+    details: "Thermal spa treatments; Hungarian culture immersion; Danube river cruises; traditional Hungarian cuisine; architectural heritage tours",
+    clothing: "Elegant spa wear; comfortable robes; minimal jewelry; natural skincare; thermal pool attire",
+    photoLocation: "In historic thermal baths; at Budapest Parliament; on Danube riverbank",
+    adultIdea: "Hungarian thermal goddess with steam and warm lighting (21+)"
 },
-{
+{ 
     id: 53,
-season: "June",
-event: "Provence Lavender Fields",
-location: "Valensole Plateau, Provence, France",
-details: "Lavender harvesting participation; cycling tours through French countryside; local farmers markets; Provençal cooking masterclasses; exploring historical villages",
-clothing: "French countryside chic; light purple dresses; comfortable cycling clothes; sun protection accessories; natural French beauty",
-photoLocation: "In endless lavender fields; at French stone villages; on countryside cycling paths",
-adultIdea: "Provençal lavender goddess among purple fields with sunset lighting (18+)"
+    season: "June",
+    event: "Provence Lavender Fields",
+    location: "Valensole Plateau, Provence, France",
+    details: "Lavender harvesting participation; cycling tours through French countryside; local farmers markets; Provençal cooking masterclasses; exploring historical villages",
+    clothing: "French countryside chic; light purple dresses; comfortable cycling clothes; sun protection accessories; natural French beauty",
+    photoLocation: "In endless lavender fields; at French stone villages; on countryside cycling paths",
+    adultIdea: "Provençal lavender goddess among purple fields with sunset lighting (18+)"
 },
-{
+{ 
     id: 54,
-season: "December",
-event: "Swiss Alps Luxury Ski Resort",
-location: "St. Moritz, Switzerland",
-details: "World-class skiing; luxury mountain resorts; aprês-ski parties; Alpine spa treatments; winter photography sessions",
-clothing: "Designer ski wear; luxury winter fashion; aprês-ski elegant outfits; winter accessories; sophisticated alpine styling",
-photoLocation: "On pristine ski slopes; at luxury mountain chalets; in Swiss Alpine landscapes",
-adultIdea: "Swiss Alpine goddess in luxury chalet with mountain and snow elements (18+)"
+    season: "December",
+    event: "Swiss Alps Luxury Ski Resort",
+    location: "St. Moritz, Switzerland",
+    details: "World-class skiing; luxury mountain resorts; aprês-ski parties; Alpine spa treatments; winter photography sessions",
+    clothing: "Designer ski wear; luxury winter fashion; aprês-ski elegant outfits; winter accessories; sophisticated alpine styling",
+    photoLocation: "On pristine ski slopes; at luxury mountain chalets; in Swiss Alpine landscapes",
+    adultIdea: "Swiss Alpine goddess in luxury chalet with mountain and snow elements (18+)"
 },
-{
+{ 
     id: 55,
-season: "June",
-event: "Monaco Grand Prix Glamour",
-location: "Monte Carlo, Monaco",
-details: "Formula 1 Grand Prix events; yacht parties; casino nights; luxury shopping; Mediterranean lifestyle",
-clothing: "Glamorous racing fashion; yacht party attire; casino elegant wear; luxury accessories; Monaco sophistication",
-photoLocation: "At Monaco Grand Prix; on luxury yachts; at Monte Carlo casino",
-adultIdea: "Monaco royalty fantasy in luxury yacht setting with Mediterranean glamour (21+)"
+    season: "June",
+    event: "Monaco Grand Prix Glamor",
+    location: "Monte Carlo, Monaco",
+    details: "Formula 1 Grand Prix events; yacht parties; casino nights; luxury shopping; Mediterranean lifestyle",
+    clothing: "Glamorous racing fashion; yacht party attire; casino elegant wear; luxury accessories; Monaco sophistication",
+    photoLocation: "At Monaco Grand Prix; on luxury yachts; at Monte Carlo casino",
+    adultIdea: "Monaco royalty fantasy in luxury yacht setting with Mediterranean glamor (21+)"
 },
 {
     id: 56,
-season: "May",
-event: "Champagne Region Harvest",
-location: "Reims, Champagne, France",
-details: "Экскурсии по шампанским домам; участие в сборе винограда; опыт французской гастрономии; пикники в виноградниках; дегустации в погребах",
-clothing: "Французская деревенская элегантность; удобная одежда для виноградников; элегантные летние платья; изысканные аксессуары; естественная французская красота",
-photoLocation: "В шампанских виноградниках; в исторических погребах; у французских замков",
-adultIdea: "Шампанская богиня среди виноградных лоз с пузырьками и золотистым освещением (18+)"
+    season: "May",
+    event: "Champagne Region Harvest",
+    location: "Reims, Champagne, France",
+    details: "Champagne house tours; grape harvesting; French gastronomy experiences; vineyard picnics; cellar tastings",
+    clothing: "French rustic elegance; comfortable vineyard attire; elegant summer dresses; sophisticated accessories; natural French beauty",
+    photoLocation: "In Champagne vineyards; in historic cellars; at French chateaux",
+    adultIdea: "A Champagne goddess among the vines with bubbles and golden lighting (18+)"
 },
 {
     id: 57,
-season: "December",
-event: "Loire Valley Château Christmas",
-location: "Loire Valley, France",
-details: "Проживание в исторических замках; традиционное французское Рождество; дегустации вина; культурно-исторические экскурсии; мастер-классы французской кухни",
-clothing: "Элегантная зимняя мода; изысканные наряды для замка; классический французский стиль; роскошные аксессуары; утончённый макияж",
-photoLocation: "В замках долины Луары; у рождественских украшений; в исторических французских садах",
-adultIdea: "Фантазия французской аристократии в библиотеке замка с бархатом и свечами (21+)"
+    season: "December",
+    event: "Loire Valley Château Christmas",
+    location: "Loire Valley, France",
+    details: "Stay in historic castles; traditional French Christmas; wine tastings; cultural and historical tours; French cooking masterclasses",
+    clothing: "Elegant winter fashion; exquisite castle outfits; classic French style; luxurious accessories; sophisticated makeup",
+    photoLocation: "In the castles of the Loire Valley; among Christmas decorations; in historic French gardens",
+    adultIdea: "A French aristocratic fantasy in a castle library with velvet and candles (21+)"
 },
 {
     id: 58,
-season: "March",
-event: "Montmartre Artist Quarter Experience",
-location: "Montmartre, Paris, France",
-details: "Посещение художничьих студий; мастер-классы по живописи; богемная кафейная культура; исследование Сакре-Кёр; сотрудничество с местными художниками",
-clothing: "Богемный парижский стиль; творческие аксессуары; удобная обувь для прогулок; креативные макияжные образы; винтажные французские вещи",
-photoLocation: "В художничьих студиях; у Сакре-Кёр; на брусчатке Монмартра",
-adultIdea: "Парижская муза художника в богемной студии с красками и творческим хаосом (18+)"
+    season: "March",
+    event: "Montmartre Artist Quarter Experience",
+    location: "Montmartre, Paris, France",
+    details: "Visit artist studios; painting masterclasses; bohemian cafe culture; exploration of the Sacré-Coeur; collaboration with local artists",
+    clothing: "Bohemian Parisian Style; Creative Accessories; Comfortable Walking Shoes; Creative Makeup Looks; Vintage French Items",
+    photoLocation: "In Artists' Studios; Near Sacré-Coeur; On the Cobblestones of Montmartre",
+    adultIdea: "The Artist's Parisian Muse in a Bohemian Studio with Colors and Creative Chaos (18+)"
 },
 {
     id: 59,
-season: "February",
-event: "Chinese New Year Celebration Beijing",
-location: "Forbidden City, Beijing, China",
-details: "Traditional dragon dance parades; temple fair visits; fireworks; calligraphy workshops; authentic Chinese cuisine discovery",
-clothing: "Traditional Chinese qipao and cheongsam; red festive colors; comfortable shoes for walking; traditional accessories; elegant styling",
-photoLocation: "At Forbidden City; during dragon dance performances; at traditional temple fairs",
-adultIdea: "Chinese New Year empress fantasy in Forbidden City with traditional elements (21+)"
+    season: "February",
+    event: "Chinese New Year Celebration Beijing",
+    location: "Forbidden City, Beijing, China",
+    details: "Traditional Dragon Dance Parades; Temple Fair Visits; Fireworks; Calligraphy Workshops; Authentic Chinese Cuisine Discovery",
+    clothing: "Traditional Chinese qipao and cheongsam; Red Festive Colors; Comfortable Walking Shoes; Traditional Accessories; Elegant Styling",
+    photoLocation: "At Forbidden City; During Dragon Dance Performances; At Traditional Temple Fairs",
+    adultIdea: "Chinese New Year empress fantasy in Forbidden City with traditional elements (21+)"
 },
-{
+{ 
     id: 60,
-season: "November",
-event: "Silk Road Cultural Journey",
-location: "Xi'an & Dunhuang, China",
-details: "Terracotta Army exploration; Silk Road history; desert camel trekking; traditional craft workshops; ancient Buddhist temples",
-clothing: "Desert-appropriate clothing; traditional Silk Road inspired outfits; protective accessories; comfortable trekking gear; ethnic elements",
-photoLocation: "With Terracotta Army; in Silk Road desert landscapes; at ancient Buddhist temples",
-adultIdea: "Silk Road goddess fantasy in desert oasis with ancient Chinese mystique (18+)"
+    season: "November",
+    event: "Silk Road Cultural Journey",
+    location: "Xi'an & Dunhuang, China",
+    details: "Terracotta Army exploration; Silk Road history; desert camel trekking; traditional craft workshops; ancient Buddhist temples",
+    clothing: "Desert-appropriate clothing; traditional Silk Road dressed outfits; protective accessories; comfortable trekking gear; ethnic elements",
+    photoLocation: "With Terracotta Army; in Silk Road desert landscapes; at ancient Buddhist temples",
+    adultIdea: "Silk Road goddess fantasy in desert oasis with ancient Chinese mystique (18+)"
 },
 {
     id: 61,

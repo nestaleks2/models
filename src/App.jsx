@@ -4,6 +4,7 @@ import models from './data/models'
 import Gallery from './components/Gallery'
 import ModelPage from './components/ModelPage'
 import EventsPage from './components/EventsPage'
+import SpecialPage from './components/SpecialPage'
 import './App.css'
 
 function ModelPageWrapper({ lang }) {
@@ -50,6 +51,17 @@ function EventsPageWrapper({ lang }) {
   }
 
   return <EventsPage lang={lang} onBack={handleBack} />
+}
+
+function SpecialPageWrapper({ lang }) {
+  const navigate = useNavigate()
+
+  const handleBack = () => {
+    navigate('/')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return <SpecialPage lang={lang} onBack={handleBack} />
 }
 
 export default function App() {
@@ -116,6 +128,7 @@ export default function App() {
               <Route path="/" element={<GalleryWrapper lang={lang} />} />
               <Route path="/model/:id" element={<ModelPageWrapper lang={lang} />} />
               <Route path="/events" element={<EventsPageWrapper lang={lang} />} />
+              <Route path="/special" element={<SpecialPageWrapper lang={lang} />} />
             </Routes>
           </div>
         </main>
