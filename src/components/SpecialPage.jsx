@@ -3,7 +3,6 @@ import { getAshleyMedia, getAthenaMedia } from '../utils/mediaLoader'
 import './SpecialPage.css'
 
 export default function SpecialPage({ lang = 'ru', onBack }) {
-  const [currentSlide, setCurrentSlide] = useState({})
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxContent, setLightboxContent] = useState(null)
   const [lightboxBlockIndex, setLightboxBlockIndex] = useState(null)
@@ -38,24 +37,6 @@ export default function SpecialPage({ lang = 'ru', onBack }) {
 
     loadMedia()
   }, [])
-
-  const nextSlide = (blockIndex) => {
-    const block = mediaBlocks[blockIndex]
-    if (!block || !block.items.length) return
-    setCurrentSlide(prev => ({
-      ...prev,
-      [blockIndex]: ((prev[blockIndex] || 0) + 1) % block.items.length
-    }))
-  }
-
-  const prevSlide = (blockIndex) => {
-    const block = mediaBlocks[blockIndex]
-    if (!block || !block.items.length) return
-    setCurrentSlide(prev => ({
-      ...prev,
-      [blockIndex]: ((prev[blockIndex] || 0) - 1 + block.items.length) % block.items.length
-    }))
-  }
 
   const openLightbox = (item, blockIndex, itemIndex) => {
     setLightboxContent(item)
@@ -93,7 +74,6 @@ export default function SpecialPage({ lang = 'ru', onBack }) {
     
     setLightboxItemIndex(nextIndex)
     setLightboxContent({ ...nextItem })
-    setCurrentSlide(prev => ({ ...prev, [lightboxBlockIndex]: nextIndex }))
   }
 
   const prevLightboxSlide = () => {
@@ -109,7 +89,6 @@ export default function SpecialPage({ lang = 'ru', onBack }) {
     
     setLightboxItemIndex(prevIndex)
     setLightboxContent({ ...prevItem })
-    setCurrentSlide(prev => ({ ...prev, [lightboxBlockIndex]: prevIndex }))
   }
 
   const t = {
@@ -118,36 +97,63 @@ export default function SpecialPage({ lang = 'ru', onBack }) {
       backButton: 'Назад',
       reportTitle: 'Отчет о проделанной работе',
       reportContent: `
-        Данный отчет содержит подробную информацию о выполненных задачах и достигнутых результатах.
+        Первостепенной задачей было создать качественные прототипы девушек, которые будут использоваться в качестве исходного материала для генерации материала.
+
+        Изначальные предположения о возможностях быстрой и несложной генерации оказались ложными.
+
+        Тестировали разные модели генерации контента. Анатолий наверное сбился со счету, сколько раз он скачивал и настраивал модели))
         
-        В ходе работы были реализованы следующие ключевые функции:
-        • Система управления контентом
-        • Интерактивные элементы интерфейса
-        • Оптимизация производительности
-        • Адаптивный дизайн для различных устройств
+        Но одной модели недостаточно, нужны еще дополнительные учебники для модели, которые показывают ей, как должна та или иная деталь. 
+        В зависимости от того, что нам требуется получить на фото, необходимо для каждой модели создать процесс и подключить такие определенные учебники:
+            - под конкретные типы одежды: lingerie, bikini, stockings, latex outfits, school uniform, maid outfit и т.д.;
+            - под реалистичные обнажённые тела, естественную кожу, грудь разных размеров, позы. Не добавляют одежду, но отлично детализируют тело;
+            - под динамичные сексуальные позы, проникновение, взаимодействие с партнёром. Часто разделены по конкретным позам или актам.
+        Найти подходящий для нашей модели учебник, его подключение и настройка - это тоже достаточно долгий процесс, поскольку как правило они занимают большой объем памяти, а после установки и настройки выясняется, что он не подходит, поскольку выдает плохое качество и возникают ошибки при взаимодействии с другими элементами процесса.
+
+        Для генерации оптимального качества контента нужно провести не менее 10 итераций, чтобы из этих 10 фото отобрать 1-2 единицы приемлемого качества.
+        Отдельных трудов стоит настройка и написание промтов для использования прототипа девушки в другой одежде или позе. Даже при соблюдении все рекомендаций и настройках согласно инструкции, в корзину отправляется большая часть сгенерированного материала, поскольку очень заметны отличия от прототипа девушки.
+
+        Для тестирования генерации изображений были взяты модели Ashley и Athena.
+
+        Из небольшого фрагмента созданы девушки в полный рост и с этими фото уже проводим манипуляции с одеждой, позами.
         
-        Особое внимание было уделено пользовательскому опыту и современным стандартам веб-разработки.
-        Все компоненты прошли тщательное тестирование и соответствуют требованиям безопасности.
+        Видео сейчас можем создавать длительностью 5 секунд. Генерация такого видео занимает от 2 до 4 часов, в виду недостаточной мощности компьютера. Если в высоком качестве, то еще дольше.
+
+        Работать можно, только нужен компьютер помощнее. Сейчас много времени теряется на ожидание готового контента, из которого после сортировки остается лишь малая доля.
       `,
-      conclusion: 'Все поставленные цели были успешно достигнуты в установленные сроки.'
+      conclusion: ''
     },
     en: {
       title: 'Special Page',
       backButton: 'Back',
-      reportTitle: 'Work Progress Report',
+      reportTitle: 'Arbeitsfortschrittsbericht',
       reportContent: `
-        This report contains detailed information about completed tasks and achieved results.
+        Die vorrangige Aufgabe bestand darin, qualitativ hochwertige Prototypen von Frauen zu erstellen, die als Ausgangsmaterial für die Content-Generierung dienen.
+
+        Die anfänglichen Annahmen über die Möglichkeiten einer schnellen und einfachen Generierung erwiesen sich als falsch.
+
+        Es wurden verschiedene Modelle zur Content-Generierung getestet. Anatolij hat vermutlich den Überblick verloren, wie oft er die Modelle heruntergeladen und neu konfiguriert hat 🙂
         
-        The following key functions were implemented during the work:
-        • Content management system
-        • Interactive interface elements
-        • Performance optimization
-        • Responsive design for various devices
-        
-        Special attention was paid to user experience and modern web development standards.
-        All components have been thoroughly tested and meet security requirements.
+        Ein einzelnes Modell reicht jedoch nicht aus; wir benötigen zusätzliche Tutorials, die ihr zeigen, wie jedes Detail aussehen soll.
+
+        Je nachdem, was wir mit dem Foto erreichen wollen, müssen wir für jedes Modell einen Prozess erstellen und die folgenden spezifischen Tutorials verknüpfen:
+            – für bestimmte Kleidungsstücke: Dessous, Bikinis, Strümpfe, Latex-Outfits, Schuluniformen, Dienstmädchen-Outfits usw.;
+            – für realistische Aktaufnahmen, natürliche Haut, Brüste unterschiedlicher Größe und Posen. Diese fügen keine Kleidung hinzu, bieten aber exzellente Körperdetails;
+            – für dynamische Sexstellungen, Penetration und Interaktion mit einem Partner. Diese werden oft in spezifische Stellungen oder Handlungen unterteilt.
+        Das Finden, Verknüpfen und Einrichten eines geeigneten Tutorials für unser Modell ist ebenfalls ein recht zeitaufwändiger Prozess, da diese Tutorials in der Regel viel Speicherplatz benötigen. Nach der Installation und Konfiguration stellt sich heraus, dass es ungeeignet ist, schlechte Qualität liefert und Fehler bei der Interaktion mit anderen Elementen des Prozesses auftreten.
+
+        Um eine optimale Content-Qualität zu erreichen, sind mindestens 10 Iterationen erforderlich, aus denen in der Regel nur 1–2 Bilder von akzeptabler Qualität ausgewählt werden können.
+        Ein zusätzlicher und nicht unerheblicher Aufwand entsteht durch die Erstellung und Feinabstimmung von Prompts, um denselben weiblichen Prototyp in anderer Kleidung oder Pose zu verwenden. Selbst bei Einhaltung aller Empfehlungen und Einstellungen gemäß Anleitung wird ein Großteil des generierten Materials verworfen, da die Abweichungen vom ursprünglichen Prototyp deutlich sichtbar bleiben.
+
+        Für die Tests der Bildgenerierung wurden die Modelle Ashley und Athena verwendet.
+
+        Aus einem kleinen Bildausschnitt wurden Ganzkörperdarstellungen der Frauen erstellt, die anschließend für weitere Manipulationen wie Kleidung und Posen genutzt werden.
+
+        Derzeit können Videos mit einer Länge von bis zu 5 Sekunden erstellt werden. Aufgrund der begrenzten Rechnerleistung dauert die Generierung eines solchen Videos zwischen 2 und 4 Stunden; bei höherer Qualität entsprechend länger.
+
+        Grundsätzlich ist ein Weiterarbeiten möglich, jedoch wird dafür ein leistungsstärkerer Computer benötigt. Aktuell geht viel Zeit durch das Warten auf fertig generierten Content verloren, von dem nach der anschließenden Sortierung nur ein kleiner Teil tatsächlich verwendbar ist.
       `,
-      conclusion: 'All set goals were successfully achieved within the established timeframe.'
+      conclusion: ''
     }
   }
 
@@ -176,53 +182,33 @@ export default function SpecialPage({ lang = 'ru', onBack }) {
           <section key={blockIndex} className="special-media-section">
             <h3>{block.title}</h3>
             {block.items.length > 0 ? (
-              <div className="special-fullscreen-slider">
-                <button 
-                  className="special-nav-btn prev-btn"
-                  onClick={() => prevSlide(blockIndex)}
-                  disabled={block.items.length <= 1}
-                >
-                  ‹
-                </button>
-                
-                <div className="special-viewer">
-                  <div className="special-page-counter">
-                    {(currentSlide[blockIndex] || 0) + 1} / {block.items.length}
-                  </div>
-                  {block.items.map((item, itemIndex) => {
-                    const isActive = (currentSlide[blockIndex] || 0) === itemIndex
-                    return (
-                      <div 
-                        key={itemIndex}
-                        className={`special-slide ${isActive ? 'active' : ''}`}
-                        onClick={() => openLightbox(item, blockIndex, itemIndex)}
-                      >
-                        {item.type === 'image' ? (
-                          <img src={item.src} alt={item.alt} className="special-page-media" />
-                        ) : (
-                          <video 
-                            className="special-page-media"
-                            controls
-                            loop
-                            playsInline
-                            poster={item.poster}
-                          >
-                            <source src={item.src} type="video/mp4" />
-                            Ваш браузер не поддерживает видео.
-                          </video>
-                        )}
+              <div className="media-grid">
+                {block.items.map((item, itemIndex) => (
+                  <div 
+                    key={itemIndex}
+                    className="media-tile"
+                    onClick={() => openLightbox(item, blockIndex, itemIndex)}
+                  >
+                    <div className="media-tile-content">
+                      {item.type === 'image' ? (
+                        <img src={item.src} alt={item.alt} className="media-tile-image" />
+                      ) : (
+                        <video 
+                          className="media-tile-video"
+                          poster={item.poster}
+                        >
+                          <source src={item.src} type="video/mp4" />
+                          Ваш браузер не поддерживает видео.
+                        </video>
+                      )}
+                      <div className="media-tile-overlay">
+                        <span className="media-tile-icon">
+                          {item.type === 'image' ? '🖼️' : '🎥'}
+                        </span>
                       </div>
-                    )
-                  })}
-                </div>
-
-                <button 
-                  className="special-nav-btn next-btn"
-                  onClick={() => nextSlide(blockIndex)}
-                  disabled={block.items.length <= 1}
-                >
-                  ›
-                </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="empty-media">
